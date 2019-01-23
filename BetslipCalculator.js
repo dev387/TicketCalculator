@@ -1,21 +1,9 @@
-class TicketType {
-  constructor(type) {
-    this.type = type;
-    return this;
-  }
-
-  getType() {
-    return this.type;
-  }
-}
-
 class BetslipCalculator {
 
   constructor() {
     this.bets = [];
     this.systems = [];
     this.stake = 0.95;
-    this.ticketType = new TicketType('SYSTEM').getType();
   }
 
   setBets(bets) {
