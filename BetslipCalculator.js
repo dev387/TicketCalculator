@@ -153,7 +153,7 @@ class BetslipCalculator {
   }
 }
 
-const getSystemCombsOdds = (systemOdds, systemLoweNumber, callback) => {
+const getSystemCombsOdds = (systemOdds, systemLowerNumber, callback) => {
   let {
     length
   } = systemOdds;
@@ -169,7 +169,7 @@ const getSystemCombsOdds = (systemOdds, systemLoweNumber, callback) => {
       }
     }
   };
-  inner(0, systemLoweNumber);
+  inner(0, systemLowerNumber);
 }
 
 const getNumberOfCombs = (num1, num2) => {
