@@ -79,6 +79,11 @@ class BetslipCalculator {
         return this.stake / combinations;
     }
 
+    getSingleStake() {
+        let singleStake = parseFloat(this.stake) / this.bets.length;
+        return singleStake;
+      }
+
     calculateSystemWinnings() {
         const nonBankers = this.getNonBankers();
         const bankers = this.getBankers();
@@ -122,6 +127,17 @@ class BetslipCalculator {
 
         return maxWinning;
     }
+
+    calculateSingleWinnings() {
+        const singleStake = this.getSingleStake();
+    
+        let winnings = 0;
+    
+        this.bets.forEach((bet) => {
+          winnings += (parseFloat(bet.oddValue) * singleStake);
+        });
+        return parseFloat(winnings.toFixed(2));
+      }
 
 }
 
@@ -171,11 +187,11 @@ const bets = [
         oddValue: 2.00
     },
     {
-        banker: false,
+        banker: true,
         oddValue: 1.40
     },
     {
-        banker: true,
+        banker: false,
         oddValue: 2.10
     },
     {
@@ -186,7 +202,10 @@ const bets = [
 
 betslipCalc.setBets(bets);
 
-betslipCalc.toggleSystem(3);
 betslipCalc.toggleSystem(1);
+betslipCalc.toggleSystem(2);
+betslipCalc.toggleSystem(3);
+// betslipCalc.toggleSystem(4);
 // betslipCalc.toggleSystem(5);
-betslipCalc.calculateSystemWinnings();
+console.log('System Winnings => ', betslipCalc.calculateSystemWinnings().toFixed(2));
+console.log('Single Winnings => ', betslipCalc.calculateSingleWinnings().toFixed(2));
