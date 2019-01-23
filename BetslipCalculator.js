@@ -80,9 +80,18 @@ class BetslipCalculator {
     }
 
     getSingleStake() {
-        let singleStake = parseFloat(this.stake) / this.bets.length;
-        return singleStake;
-      }
+        return parseFloat(this.stake) / this.bets.length;
+    }
+
+    getTotalOdds() {
+        let total = 1;
+
+        this.bets.forEach((bet) => {
+            total *= parseFloat(bet.oddValue);
+        });
+
+        return total;
+    }
 
     calculateSystemWinnings() {
         const nonBankers = this.getNonBankers();
@@ -130,21 +139,24 @@ class BetslipCalculator {
 
     calculateSingleWinnings() {
         const singleStake = this.getSingleStake();
-    
+
         let winnings = 0;
-    
+
         this.bets.forEach((bet) => {
-          winnings += (parseFloat(bet.oddValue) * singleStake);
+            winnings += (parseFloat(bet.oddValue) * singleStake);
         });
         return parseFloat(winnings.toFixed(2));
-      }
+    }
 
+    calculateComboWinnings() {
+        return this.stake * this.getTotalOdds();
+    }
 }
 
 const getSystemCombsOdds = (systemOdds, systemLoweNumber, callback) => {
     let n = systemOdds.length;
     let c = [];
-    const inner =  (start, choose_) => {
+    const inner = (start, choose_) => {
         if (choose_ == 0) {
             callback(c);
         } else {
@@ -159,7 +171,13 @@ const getSystemCombsOdds = (systemOdds, systemLoweNumber, callback) => {
 }
 
 const getNumberOfCombs = (num1, num2) => {
-    const { lower, higher } = { lower: num1 > num2 ? num2 : num1, higher: num1 > num2 ? num1 : num2 };
+    const {
+        lower,
+        higher
+    } = {
+        lower: num1 > num2 ? num2 : num1,
+        higher: num1 > num2 ? num1 : num2
+    };
 
     let x = 1;
     let y = 1;
@@ -177,8 +195,7 @@ const getNumberOfCombs = (num1, num2) => {
 
 const betslipCalc = new BetslipCalculator();
 
-const bets = [
-    {
+const bets = [{
         banker: false,
         oddValue: 1.85
     },
@@ -209,3 +226,4 @@ betslipCalc.toggleSystem(3);
 // betslipCalc.toggleSystem(5);
 console.log('System Winnings => ', betslipCalc.calculateSystemWinnings().toFixed(2));
 console.log('Single Winnings => ', betslipCalc.calculateSingleWinnings().toFixed(2));
+console.log('Combo Winnings => ', betslipCalc.calculateComboWinnings().toFixed(2));
